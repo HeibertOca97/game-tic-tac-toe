@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Acme&family=Bungee&family=Smooch+Sans:wght@100;400&display=swap');
+
+:root {
+    --font1: 'Acme', sans-serif;
+    /*400*/
+    --font2: 'Bungee', cursive;
+    /*400*/
+    --font3: 'Smooch Sans', sans-serif;
+    /*100 - 400*/
+    --size: 1.1em;
+    --dark-color: rgb(36, 36, 36);
+    --first-color-value: rgb(57, 70, 185);
+    --second-color-value: rgb(219, 69, 69);
+    --shadow1: rgba(36, 36, 36, 0.151);
+    --shadow2: rgba(119, 119, 119, 0.336);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font3);
+    font-size: var(--size);
+    color: var(--dark-color);
+}
+
+/**************************
+ * 
+ * 
+ *  DETAILS SECTION
+ * 
+ * 
+************************/
+.card-game-state {
+    max-width: 800px;
+    margin: 15px auto;
+}
+
+.card-game-state>.card-header {
+    font-family: var(--font1);
+    font-size: calc(var(--size) + 3em);
+    text-align: center;
+}
+
+/**************************
+ * 
+ * 
+ *  SECTION GAME
+ * 
+ * 
+************************/
+.box-game {
+    box-shadow: 0px 5px 15px var(--shadow1);
+    width: 300px;
+    height: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 5px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+}
+
+div.item {
+    box-shadow: 0px 5px 5px var(--shadow2);
+    border-radius: 5px;
+    display: grid;
+    cursor: pointer;
+    font-family: var(--font2);
+}
+
+div.item span.value {
+    place-self: center;
+    font-size: calc(var(--size) + .9em);
+    font-weight: bold;
+}
+
+.first_color_value {
+    color: var(--first-color-value);
+}
+
+.second_color_value {
+    color: var(--second-color-value);
+}

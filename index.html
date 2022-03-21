@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="./game.css">
+</head>
+
+<body>
+    <section class="card-game-state">
+        <h1 class="card-header">Tic tac toe</h1>
+        <div class="card-body">
+
+        </div>
+        <h2>Current turn: <span id="player"></span></h2>
+        <h3 id="statusDisplay"></h3>
+        <div class="card-body-controls">
+            <button onclick="playAgain()">Play again</button>
+            <button onclick="playAnotherGame()">Start a new game</button>
+        </div>
+    </section>
+    <main class="box-game">
+    </main>
+    <script src="./game.js"></script>
+</body>
+
+</html>
