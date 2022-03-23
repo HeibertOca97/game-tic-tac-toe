@@ -6,24 +6,69 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./game.css">
 </head>
 
 <body>
-    <section class="card-game-state">
-        <h1 class="card-header">Tic tac toe</h1>
-        <div class="card-body">
+    <!-- First Display -->
+    <div class="game_first_display">
+        <img class="wallpaper" src="./src/wallpaper.jpg" alt="wallpaper" />
 
+        <h1 class="game_title content">TIC TAC TOE</h1>
+        <div class="game_control content">
+            <button id="btn-playnow" class="btn btn-action"><i class="fas fa-play-circle"></i></button>
+            <div class="__game_control">
+                <button id="btn-music" class="btn btn-action2"><i class="fas fa-volume-down"></i></button>
+                <button class="btn btn-action2"><i class="fas fa-info-circle"></i></button>
+                <button class="btn btn-action2"><i class="fas fa-cog"></i></button>
+            </div>
         </div>
-        <h2>Current turn: <span id="player"></span></h2>
-        <h3 id="statusDisplay"></h3>
-        <div class="card-body-controls">
-            <button onclick="playAgain()">Play again</button>
-            <button onclick="playAnotherGame()">Start a new game</button>
+    </div>
+    <!-- Second Display -->
+    <div class="game_second_display">
+        <section class="card-game-state">
+            <h1 class="card-header">Tic tac toe</h1>
+            <div class="card-body">
+
+            </div>
+            <h2>Current turn: <span id="player"></span></h2>
+            <h3 id="statusDisplay"></h3>
+            <div class="card-body-controls">
+                <button onclick="playAgain()">Play again</button>
+                <button onclick="playAnotherGame()">Start a new game</button>
+            </div>
+        </section>
+        <!-- Game container -->
+        <main class="box-game">
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal_game_control">
+        <div class="card-action">
+            <div class="card-header">
+                <h4>Title modal</h4>
+            </div>
+            <div class="card-body">
+
+                <div class="card-info">
+                    this is info section.
+                </div>
+                <div class="card-control">
+                    <button><i class="fas fa-redo-alt"></i></button>
+                </div>
+            </div>
         </div>
-    </section>
-    <main class="box-game">
-    </main>
+    </div>
+
+    <!-- Game Music -->
+    <audio controls id="sound" data-state="true">
+        <source src="./src/funds.wav" type="audio/wav">
+    </audio>
+
     <script src="./game.js"></script>
 </body>
 

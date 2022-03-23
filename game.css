@@ -8,11 +8,16 @@
     --font3: 'Smooch Sans', sans-serif;
     /*100 - 400*/
     --size: 1.1em;
-    --dark-color: rgb(36, 36, 36);
+    --light: rgb(223, 223, 223);
+    --dark: rgb(12, 12, 12);
+    --alpha-dark: rgba(0, 0, 0, .5);
+    --txt-dark: rgb(36, 36, 36);
+
     --first-color-value: rgb(57, 70, 185);
     --second-color-value: rgb(219, 69, 69);
     --shadow1: rgba(36, 36, 36, 0.151);
     --shadow2: rgba(119, 119, 119, 0.336);
+    --green: rgb(0, 168, 98);
 }
 
 * {
@@ -24,8 +29,167 @@
 body {
     font-family: var(--font3);
     font-size: var(--size);
-    color: var(--dark-color);
+    color: var(--txt-dark);
 }
+
+i {
+    display: block;
+    transition: all 200ms;
+}
+
+audio {
+    display: none;
+}
+
+/******* MODAL *********/
+.modal_game_control {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 25;
+    background-color: transparent;
+    width: 100%;
+    height: 100vh;
+    overflow: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    display: none;
+}
+
+.modal_game_control>.card-action {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 0px 50px 0px 50px;
+    overflow: hidden;
+    background-color: rgba(0, 255, 149, 0.24);
+    color: white;
+}
+
+.modal_game_control>.card-action .card-header {
+    line-height: 3em;
+    padding: 0 25px;
+    background-color: rgba(0, 173, 101, 0.534);
+    border-bottom: 1px solid var(--light);
+}
+
+.modal_game_control>.card-action .card-body {
+    padding: 10px 25px;
+}
+
+/* game_first_display, game_second_display {
+} */
+
+.game_first_display {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.game_first_display img.wallpaper {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    object-position: center;
+    filter: blur(5px);
+}
+
+.game_first_display::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--alpha-dark);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.game_first_display>.content {
+    z-index: 5;
+}
+
+.game_first_display>.game_title {
+    font-size: calc(var(--size)+4em);
+    color: var(--green);
+    text-shadow: 0px 5px 0px rgb(42, 255, 166);
+    font-family: var(--font2);
+    text-align: center;
+}
+
+.game_control {
+    margin: 25px auto 0px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.game_control>.btn {
+    font-size: calc(var(--size)+7em);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 50%;
+    transition: all 200ms;
+}
+
+.game_control>.btn:hover {
+    transform: scale(1.2);
+    box-shadow: 0px 5px 50px transparent;
+}
+
+.game_control .btn-action {
+    color: var(--dark);
+}
+
+.game_control .btn-action2 {
+    color: var(--dark);
+}
+
+.game_control>.btn i {
+    background-color: var(--green);
+    border-radius: 50%;
+}
+
+.game_control .btn:hover i {
+    color: rgb(223, 223, 223);
+}
+
+.game_control>.__game_control {
+    margin: 25px auto 0px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game_control>.__game_control .btn {
+    font-size: calc(var(--size)+1.9em);
+    background-color: var(--green);
+    border: none;
+    border-radius: 2px;
+    padding: 8px 10px;
+    cursor: pointer;
+    text-align: center;
+    margin: 0px 5px;
+}
+
+.game_second_display {
+    display: none;
+}
+
 
 /**************************
  * 
@@ -86,4 +250,19 @@ div.item span.value {
 
 .second_color_value {
     color: var(--second-color-value);
+}
+
+
+@media screen and (min-width: 768px) {
+    .game_first_display {
+        justify-content: center;
+    }
+
+    .game_control {
+        margin: 100px auto 0px auto;
+    }
+
+    .game_first_display>.game_title {
+        font-size: calc(var(--size)+7em);
+    }
 }

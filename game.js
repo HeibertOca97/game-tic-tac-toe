@@ -30,9 +30,12 @@ const game = {
     ]
 }
 
-let boxGame = document.querySelector(".box-game"),
+var boxGame = document.querySelector(".box-game"),
     currentPlayer = document.querySelector("#player"),
-    statusDisplay = document.querySelector("#statusDisplay");
+    statusDisplay = document.querySelector("#statusDisplay"),
+    audio = document.querySelector("#sound"),
+    btnPlayMusic = document.getElementById("btn-music"),
+    btnGameStart = document.getElementById("btn-playnow");
 
 /**************************
  * 
@@ -41,8 +44,6 @@ let boxGame = document.querySelector(".box-game"),
  * 
  * 
 ************************/
-document.addEventListener("DOMContentLoaded", gameStart);
-
 function gameStart() {
     getPlayerData();
     addControlCell();
@@ -63,7 +64,7 @@ function gameStart() {
 
 function getPlayerData() {
     player.name.first = "Heibert";
-    player.name.first = "Joseph"
+    player.name.second = "Joseph"
 }
 
 function addControlCell() {
@@ -151,3 +152,59 @@ function playAnotherGame() {
     game.status = ["", "", "", "", "", "", "", "", ""];
     game.statusMessage = "";
 }
+
+/**************************
+ * 
+ * 
+ * CODE: GAME SOUND
+ * 
+ * 
+************************/
+
+function playMusicGame() {
+    if (!audio.getAttribute("data-state")) {
+        audio.setAttribute("data-state", "true");
+    }
+
+
+    if (audio.getAttribute("data-state") == "true") {
+        audio.setAttribute("autoplay", "");
+        audio.setAttribute("loop", "");
+        audio.play();
+        audio.volume = 0.1;
+        audio.setAttribute("data-state", "false");
+    }
+}
+
+function pauseMusicGame() {
+    if (audio.getAttribute("data-state") == "false") {
+        audio.volume = 0;
+        audio.setAttribute("data-state", "true");
+    }
+}
+
+
+btnPlayMusic.addEventListener("click", () => {
+    let icon = btnPlayMusic.children[0];
+    if (icon.classList.contains("fa-volume-down")) {
+        icon.classList.replace("fa-volume-down", "fa-volume-mute");
+        pauseMusicGame();
+    } else {
+        icon.classList.replace("fa-volume-mute", "fa-volume-down");
+        playMusicGame();
+    }
+});
+// VOLUMEN CONTROL FUNCTIONALITY
+// document.querySelector("input[type=range]").addEventListener("change", (ev) => {
+//     let result = parseInt(ev.target.value) / 100;
+//     console.log(ev.target.value);
+//     console.log(result);
+// });
+
+btnGameStart.addEventListener("click", () => {
+    console.log("Game Start");
+    document.querySelector(".game_first_display").style.display = "none";
+    document.querySelector(".game_second_display").style.display = "block";
+    pauseMusicGame();
+    gameStart();
+});
