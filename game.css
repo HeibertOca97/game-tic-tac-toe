@@ -8,16 +8,19 @@
     --font3: 'Smooch Sans', sans-serif;
     /*100 - 400*/
     --size: 1.1em;
-    --light: rgb(223, 223, 223);
+    --light: rgb(255, 255, 255);
     --dark: rgb(12, 12, 12);
     --alpha-dark: rgba(0, 0, 0, .5);
     --txt-dark: rgb(36, 36, 36);
 
     --first-color-value: rgb(57, 70, 185);
     --second-color-value: rgb(219, 69, 69);
-    --shadow1: rgba(36, 36, 36, 0.151);
-    --shadow2: rgba(119, 119, 119, 0.336);
+    --shadow-1: #1C1C1C;
+    --shadow-2: #000;    
     --green: rgb(0, 168, 98);
+    --back-dark-1: #171616;
+    --back-dark-2: #121212;
+    --back-dark-3: #0F0F0F;
 }
 
 * {
@@ -30,6 +33,7 @@ body {
     font-family: var(--font3);
     font-size: var(--size);
     color: var(--txt-dark);
+    height: 100vh;
 }
 
 i {
@@ -40,53 +44,120 @@ i {
 audio {
     display: none;
 }
-
-/******* MODAL *********/
+.btn{
+    cursor: pointer;
+}
+/****************************
+        MODAL 
+ ***********************/
 .modal_game_control {
     position: fixed;
     top: 0;
     left: 0;
     z-index: 25;
-    background-color: transparent;
+    background-color: rgba(0, 0, 0, .7);
     width: 100%;
     height: 100vh;
     overflow: auto;
 
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
-    display: none;
 }
 
 .modal_game_control>.card-action {
-    width: 100%;
+    width: 90%;
     max-width: 600px;
     border-radius: 0px 50px 0px 50px;
-    overflow: hidden;
     background-color: rgba(0, 255, 149, 0.24);
     color: white;
+    border: 10px solid rgb(0, 255, 149);
+    margin: 50px auto 50px auto;
 }
 
 .modal_game_control>.card-action .card-header {
-    line-height: 3em;
-    padding: 0 25px;
-    background-color: rgba(0, 173, 101, 0.534);
-    border-bottom: 1px solid var(--light);
+    padding: 25px 25px;
+    background-color: rgb(0, 255, 149);
+    border-bottom: 2px solid rgb(0, 255, 149);
+    font-size: calc(var(--size) + .7em);
+    position: relative;
+    border-radius: 0px 38px 0px 0px;
+    font-family: var(--font2);
+}
+
+.modal_game_control>.card-action .btn-close-Modal {
+    display: block;
+    position: absolute;
+    top: -10px;
+    right: -20px;
+    padding: 10px 15px;
+    border-radius: 50%;
+    background-color: rgb(0, 255, 149);
+    box-shadow: 0px 0px 8px rgba(1, 190, 112, 0.753);
+    cursor: pointer;
 }
 
 .modal_game_control>.card-action .card-body {
     padding: 10px 25px;
+    font-size: calc(var(--size) + .2em);
+    font-family: var(--font1)
 }
 
-/* game_first_display, game_second_display {
-} */
+.modal_game_control>.card-action .card-body>.card-info {
+    margin: 25px 0px;
+    max-height: 250px;
+    overflow: auto;
+}
 
-.game_first_display {
+.modal_game_control>.card-action .card-body>.card-info>p {
+    margin: 10px 0;
+}
+
+.modal_game_control>.card-action .card-body>.card-info>.alert-box {
+    /*border: 2px solid #fff;*/
+    background-color: #fff;
+    color: var(--back-dark-1);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+
+.modal_game_control>.card-action .card-body>.card-info .icon-link {
+    color: #fff;
+    display: block;
+}
+
+.modal_game_control>.card-action .card-body>.card-control {
+    margin: 25px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal_game_control>.card-action .card-body>.card-control>.btn-action-modal {
+    display: block;
+    margin: 0px 15px;
+    font-size: calc(var(--size) + .8em);
+    border-radius: 5px;
+    color: rgb(0, 255, 149);
+    background-color: var(--light);
+    padding: 10px 15px;
+}
+
+.cl-text {
+    color: rgb(0, 255, 149);
+}
+
+/**************** FIN MODAL ********************/
+
+.game_first_display, .game_second_display {
     width: 100%;
     height: 100vh;
     position: relative;
     overflow: auto;
+}
 
+.game_first_display {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -140,7 +211,6 @@ audio {
     font-size: calc(var(--size)+7em);
     background-color: transparent;
     border: none;
-    cursor: pointer;
     text-align: center;
     border-radius: 50%;
     transition: all 200ms;
@@ -181,43 +251,91 @@ audio {
     border: none;
     border-radius: 2px;
     padding: 8px 10px;
-    cursor: pointer;
     text-align: center;
     margin: 0px 5px;
 }
 
 .game_second_display {
+    color: #fff;
     display: none;
+    background-color: var(--back-dark-1);
 }
 
-
+.game_second_display .title-box{
+    font-family: var(--font1);
+    font-size: calc(var(--size) + 3em);
+    text-align: center;
+    margin: 15px auto 25px auto;
+}
+@media screen and (min-width: 768px) {
+    .game_second_display .title-box{
+        font-size: calc(var(--size) + 5em);
+    }
+}
 /**************************
  * 
  * 
  *  DETAILS SECTION
  * 
  * 
-************************/
+ ************************/
 .card-game-state {
     max-width: 800px;
+    width: 95%;
     margin: 15px auto;
 }
 
 .card-game-state>.card-header {
     font-family: var(--font1);
-    font-size: calc(var(--size) + 3em);
+    font-size: calc(var(--size) + .9em);
     text-align: center;
 }
+.card-game-state>.card-body {
+    font-size: calc(var(--size) + .1em);
+    margin: 15px auto;
+}
+.card-game-state>.card-body>.score-counter-box{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 15px 0px;
+    text-align: center;
+}
+.card-game-state>.card-body>.score-counter-box .game-result-box{
+    font-size: calc(var(--size) + .2em);
+    padding: 10px 0;
+}
 
+.card-game-state>.card-body>.score-counter-box .game-result-box i.btn{
+    display: inline-block;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px auto;
+}
+
+.card-game-state>.card-body>.score-counter-box .game-result-box i.btn:hover{
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.card-game-state>.card-body>.score-counter-box .game-result-box:nth-of-type(4){
+    background-color: var(--first-color-value);
+}
+.card-game-state>.card-body>.score-counter-box .game-result-box:nth-of-type(5){
+    background-color: var(--second-color-value);
+}
+.card-game-state>.card-body>.score-counter-box .game-result-box:nth-of-type(6){
+    background-color: var(--back-dark-2);
+}
 /**************************
  * 
  * 
  *  SECTION GAME
  * 
  * 
-************************/
+ ************************/
 .box-game {
-    box-shadow: 0px 5px 15px var(--shadow1);
+    box-shadow: 0px 0px 20px var(--shadow-1);
+    background-color: var(--back-dark-2);
     width: 300px;
     height: 300px;
     margin: 50px auto;
@@ -231,7 +349,8 @@ audio {
 }
 
 div.item {
-    box-shadow: 0px 5px 5px var(--shadow2);
+    box-shadow: 0px 0px 10px var(--shadow-2);
+    background-color: var(--back-dark-2);
     border-radius: 5px;
     display: grid;
     cursor: pointer;

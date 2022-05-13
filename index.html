@@ -14,7 +14,7 @@
 
 <body>
     <!-- First Display -->
-    <div class="game_first_display">
+    <div class="game_first_display component">
         <img class="wallpaper" src="./src/wallpaper.jpg" alt="wallpaper" />
 
         <h1 class="game_title content">TIC TAC TOE</h1>
@@ -22,24 +22,45 @@
             <button id="btn-playnow" class="btn btn-action"><i class="fas fa-play-circle"></i></button>
             <div class="__game_control">
                 <button id="btn-music" class="btn btn-action2"><i class="fas fa-volume-down"></i></button>
-                <button class="btn btn-action2"><i class="fas fa-info-circle"></i></button>
-                <button class="btn btn-action2"><i class="fas fa-cog"></i></button>
+                <button class="btn btn-action2" onclick="handleToggleModal('about')"><i class="fas fa-info-circle"></i></button>
+                <!--<button class="btn btn-action2"><i class="fas fa-cog"></i></button>-->
             </div>
         </div>
     </div>
     <!-- Second Display -->
-    <div class="game_second_display">
+    <div class="game_second_display component">
+        <h1 class="title-box">Tic tac toe</h1>
         <section class="card-game-state">
-            <h1 class="card-header">Tic tac toe</h1>
+            <div class="card-header">Dashboard</div>
             <div class="card-body">
-
-            </div>
-            <h2>Current turn: <span id="player"></span></h2>
-            <h3 id="statusDisplay"></h3>
-            <div class="card-body-controls">
-                <button onclick="playAgain()">Play again</button>
-                <button onclick="playAnotherGame()">Start a new game</button>
-            </div>
+                <p>Once you've checked the cell, can't you uncheck it?</p>
+                <div class="score-counter-box">
+                    <div class="game-result-box">
+                        <p><strong>Current turn</strong></p>
+                        <p id="player-character">0</p>
+                    </div>
+                    <div class="game-result-box">
+                        <p><strong>Change turn now</strong></p>
+                        <i onclick="changeCurrentFirstTurn()" id="btn-current-character" class="fas fa-exchange-alt btn"></i>
+                    </div>
+                    <div class="game-result-box">
+                        <p><strong>Actions</strong></p>
+                        <i onclick="handleToggleModal('config')" class="fas fa-stream btn"></i>
+                    </div>
+                    <div class="game-result-box">
+                        <p><strong>Player1</strong></p>
+                        <p id="player1-score">0</p>
+                    </div>
+                    <div class="game-result-box">
+                        <p><strong>Player2</strong></p>
+                        <p id="player2-score">0</p>
+                    </div>
+                    <div class="game-result-box">
+                        <p><strong>Tied game</strong></p>
+                        <p id="player-tie-score">0</p>
+                    </div>
+                </div>
+            </div> 
         </section>
         <!-- Game container -->
         <main class="box-game">
@@ -50,22 +71,14 @@
     <div class="modal_game_control">
         <div class="card-action">
             <div class="card-header">
-                <h4>Title modal</h4>
             </div>
             <div class="card-body">
-
-                <div class="card-info">
-                    this is info section.
-                </div>
-                <div class="card-control">
-                    <button><i class="fas fa-redo-alt"></i></button>
-                </div>
             </div>
         </div>
     </div>
 
     <!-- Game Music -->
-    <audio controls id="sound" data-state="true">
+    <audio id="audioBox">
         <source src="./src/funds.wav" type="audio/wav">
     </audio>
 
