@@ -115,31 +115,25 @@ var boxGame = document.querySelector(".box-game"),
    currentPlayer = document.querySelector("#player-character"),
    audioBox = document.querySelector("#audioBox"),
    btnPlayMusic = document.getElementById("btn-music"),
-   btnGameStart = document.getElementById("btn-playnow");
+   btnGameStart = document.getElementById("btn-playnow"),
+   homeComponent = document.querySelector(".game_first_display"),
+   gameComponent = document.querySelector(".game_second_display");
+
 let iconSound = btnPlayMusic.children[0];
+let inputRange = document.querySelector("input[name=vol]"),
+   txtVolum = document.getElementById("txt-vol");
 
-var gameClass = new Game();
-var playerClass = new Player();
+let gameClass = new Game();
+let playerClass = new Player();
 
-/**************************
- * 
- * 
- * CODE: GAME RULE
- * 
- * 
- ************************/
-function gameStart() {
-   // get player names
-   getPlayerData();
-   // draw and add game control cell 
-   addControlCell();
-   // draw 
-   currentPlayer.innerHTML = playerClass.currently;
-   addItemInCellAndGameValidation();
-   handleEventHoverControllCell();
-   handleEventHoverChangeCurrentFirstTurn();
-}
 
+/*******
+ * General functions
+********/
+
+/**** 
+ * @void - this function changes the turn to start 
+****/
 function changeCurrentFirstTurn(){
    if(!gameClass.status.includes("X") && !gameClass.status.includes("O")){
       playerClass.setCurrentCharacter(playerClass.currently == "X" ? "O" : "X")
@@ -147,42 +141,61 @@ function changeCurrentFirstTurn(){
    }
 }
 
-function handleEventHoverChangeCurrentFirstTurn(){
-   let btnCurrentCharacter = document.getElementById("btn-current-character");
-   btnCurrentCharacter.addEventListener('mouseenter', ()=>{
-      if(!gameClass.status.includes("X") && !gameClass.status.includes("O")){
-         btnCurrentCharacter.style.cursor = "pointer";
-      }else{
-         btnCurrentCharacter.style.cursor = "not-allowed";
-      }
-   })
+/***
+   @void - this function cleans the game state and the DOM
+****/
+function retryGame() {
+   let cellElement = document.querySelectorAll(".control-cell");
+   cellElement.forEach(el => {
+      el.style.boxShadow = "0px 0px 10px var(--shadow-2)";
+      el.innerHTML = "";
+   });
+
+   // Reset game state
+   resetGameState();
+   handleToggleModal();
 }
 
-function handleEventHoverControllCell(){
-   let controlCell = document.querySelectorAll('.control-cell');
-   for(let i = 0; i < controlCell.length; i++){
-      controlCell[i].addEventListener('mouseenter', () => {
-         if(controlCell[i].innerHTML == ""){
-            controlCell[i].style.cursor = "pointer";
-         }else{
-            controlCell[i].style.cursor = "not-allowed";
-         }
-      });
+/***
+   @void - this function controls the modal of volume
+****/
+function toggleModalVolume(){
+   let modalVolume = document.querySelector(".modal_volume");
+
+   if(modalVolume.classList.contains('show')){
+      modalVolume.classList.replace('show', 'hide');
+   }else{
+      modalVolume.classList.replace('hide', 'show');
    }
-
 }
 
-function getPlayerData() {
-   //player.name.first = "Player1";
-   //player.name.second = "Player2";
+/***
+   @void - this function is to control the screens
+****/
+function handleChangeGameScreen(display1, display2) {
+   homeComponent.style.display = display1;
+   gameComponent.style.display = display2;
 }
+/**************************
+ * 
+ * 
+ * CODE: GAME RULE
+ * 
+ * 
+ ************************/
 
+/***
+   @void - this function adds the cells to the board
+****/
 function addControlCell() {
    gameClass.cells.forEach((el, index) => {
       boxGame.insertAdjacentHTML("beforeend", `<div data="${el}" data-index="${index}" class="item control-cell"></div>`);
    });
 }
 
+/***
+   @void - this function goes through and validates each one of the cells at the moment of being filled.
+****/
 function addItemInCellAndGameValidation() {
    let cellElement = document.querySelectorAll(".control-cell");
 
@@ -198,6 +211,9 @@ function addItemInCellAndGameValidation() {
    });
 }
 
+/***
+   @void - this function adds the character and style of the cells.
+****/
 function drawCurrentPlayer(el) {
    // add player symbol
    gameClass.setStatus(el.getAttribute("data-index"), playerClass.currently);
@@ -213,6 +229,9 @@ function drawCurrentPlayer(el) {
    playerClass.setCurrentCharacter(playerClass.currently == "X" ? "O" : "X");
 }
 
+/***
+   @void - this function checks who is the winner or tied
+****/
 function checkGame() {
    let isWinner = false;
    let a, b, c;
@@ -235,7 +254,6 @@ function checkGame() {
 
    if (!isWinner && gameClass.status.includes("")) {
       validateSound("touches");
-      console.log("touches");
       return;
    }
    // Is winner
@@ -279,6 +297,10 @@ function checkGame() {
       return;
    }
 }
+
+/***
+   @void - this function prints the result in the DOM
+****/
 function addScoreBox(score){
    const {player1Counter, player2Counter, playerTieCounter} = score;
    document.getElementById('player1-score').textContent = player1Counter;
@@ -286,33 +308,51 @@ function addScoreBox(score){
    document.getElementById('player-tie-score').textContent = playerTieCounter;
 }
 
+/***
+   @void - this function adds effect to cells
+****/
+function handleEventHoverChangeCurrentFirstTurn(){
+   let btnCurrentCharacter = document.getElementById("btn-current-character");
+   btnCurrentCharacter.addEventListener('mouseenter', ()=>{
+      if(!gameClass.status.includes("X") && !gameClass.status.includes("O")){
+         btnCurrentCharacter.style.cursor = "pointer";
+      }else{
+         btnCurrentCharacter.style.cursor = "not-allowed";
+      }
+   })
+}
 
-function validateSound(gameResult = "touches") {
-   if (gameResult == "tied") {
-      audioBox.setAttribute("src", gameClass.sounds.draw);
-   } else if (gameResult == "winner") {
-      audioBox.setAttribute("src", gameClass.sounds.winner);
-   } else if (gameResult == "fund") {
-      audioBox.setAttribute("src", gameClass.sounds.fund);
-   } else {
-      audioBox.setAttribute("src", gameClass.sounds.touches);
+/***
+   @void - this function adds effect to cells
+****/
+function handleEventHoverControllCell(){
+   let controlCell = document.querySelectorAll('.control-cell');
+
+   for(let i = 0; i < controlCell.length; i++){
+      controlCell[i].addEventListener('mouseenter', () => {
+         if(controlCell[i].innerHTML == ""){
+            controlCell[i].style.cursor = "pointer";
+         }else{
+            controlCell[i].style.cursor = "not-allowed";
+         }
+      });
    }
-
-   audioBox.play();
-   audioBox.volume = 0.1;
 
 }
 
+/***
+   @void - this function exits the game and clears the game state and DOM
+****/
 function logoutGame() {
    audioBox.autoplay = true;
    audioBox.loop = true;
-   if (iconSound.classList.contains("fa-volume-mute")) iconSound.classList.replace("fa-volume-mute", "fa-volume-down");
-   validateSound("fund"); 
+   if(audioBox.volume > 0) if (iconSound.classList.contains("fa-volume-mute")) iconSound.classList.replace("fa-volume-mute", "fa-volume-down");
+   validateSound("fund");
+
    // Logout game
-   console.log("logout game");
    handleChangeGameScreen('flex', 'none')
+   homeComponent.setAttribute('data-state', "true");
    // Restart game state
-   console.log("restart game state");
    resetGameState();
    handleToggleModal();
    boxGame.innerHTML = '';
@@ -325,18 +365,11 @@ function logoutGame() {
    });
 }
 
-function retryGame() {
-   let cellElement = document.querySelectorAll(".control-cell");
-   cellElement.forEach(el => {
-      el.style.boxShadow = "0px 0px 10px var(--shadow-2)";
-      el.innerHTML = "";
-   });
 
-   // Reset game state
-   resetGameState();
-   handleToggleModal();
-}
 
+/***
+   @void - this function cleans the game state 
+****/
 function resetGameState() {
    // HTML Data
    currentPlayer.innerHTML = "X";
@@ -344,9 +377,16 @@ function resetGameState() {
    playerClass.clearData();
    // Game Data
    gameClass.clearData();
-
 }
 
+function gameStart() {
+   addControlCell();
+   /** Show the starting character **/
+   currentPlayer.innerHTML = playerClass.currently;
+   addItemInCellAndGameValidation();
+   handleEventHoverControllCell();
+   handleEventHoverChangeCurrentFirstTurn();
+}
 /**************************
  * 
  * 
@@ -354,23 +394,67 @@ function resetGameState() {
  * 
  * 
  ************************/
-function checkAttrSound() {
-   /*
-   if (!audioBox.hasAttribute("autoplay")) {
-      audioBox.setAttribute("autoplay", "");
-   }else{
-      audioBox.removeAttribute("autoplay");
+/***
+   @void - this function plays the sound of the game
+****/
+function validateSound(gameResult = "touches") {
+   if (gameResult == "tied") {
+      audioBox.setAttribute("src", gameClass.sounds.draw);
+   } else if (gameResult == "winner") {
+      audioBox.setAttribute("src", gameClass.sounds.winner);
+   } else if (gameResult == "fund") {
+      audioBox.setAttribute("src", gameClass.sounds.fund);
+   } else {
+      audioBox.setAttribute("src", gameClass.sounds.touches);
    }
-   if (!audioBox.hasAttribute("loop")) {
-      audioBox.setAttribute("loop", "");
-   }else{
-      audioBox.removeAttribute("loop");
-   }
-   */
-   //audioBox.autoplay = true;
-   //audioBox.loop = true;
+   
+   if(audioBox.volume > 0 && Number(inputRange.value) > 0) audioBox.play();
 }
 
+/***
+   @void - this function controls the sound of the game
+****/
+inputRange.addEventListener('input', (ev) => {
+   let inputValue, result;
+
+   inputValue = Number(ev.target.value);
+   txtVolum.innerHTML = inputValue;
+
+   result = getNumberConvertedIntegerToDecimal(inputValue);
+   audioBox.volume = result;
+
+   if(inputValue > 0 && inputValue < 11){
+      if (iconSound.classList.contains("fa-volume-mute")) iconSound.classList.replace("fa-volume-mute", "fa-volume-down");
+   }else{
+      if (iconSound.classList.contains("fa-volume-down")) iconSound.classList.replace("fa-volume-down", "fa-volume-mute");
+   }
+});
+
+/***
+   @decimal - this function returns a decimal number.
+****/
+function getNumberConvertedIntegerToDecimal(integerNumber){
+   let number, result;
+
+   number = Number(integerNumber);
+   result = number / 10;
+   return result;
+}
+
+/***
+   @integer - this function returns an integer.
+****/
+function getNumberConvertedDecimalToInteger(decimalNumber){
+   let number, result;
+
+   number = Number(decimalNumber);
+   result = number * 10;
+   return result;
+}
+
+/***
+   @boolean - this function checks permission for sound playback
+****/
 async function audioValidationPermision() {
    try {
       const constraints = { audio: true };
@@ -382,10 +466,16 @@ async function audioValidationPermision() {
    }
 }
 
-async function handleAutoPlayMusic() {
-   audioBox.autoplay = true;
-   audioBox.loop = true;
-   
+/***
+   @void - this function checks the permission for sound playback and returns a boolean value as the result.
+****/
+async function handleAutoPlaySoundValitation() {
+   if(homeComponent.getAttribute("data-state") && homeComponent.getAttribute("data-state") == "true"){
+      homeComponent.setAttribute('data-state', "false");
+      audioBox.autoplay = true;
+      audioBox.loop = true;
+   }
+
    if(await audioValidationPermision()){
       audioBox.play();
       audioBox.volume = 0.1;
@@ -394,64 +484,37 @@ async function handleAutoPlayMusic() {
       audioBox.volume = 0;
       if (iconSound.classList.contains("fa-volume-down")) iconSound.classList.replace("fa-volume-down", "fa-volume-mute");
    }
+
+   let result = getNumberConvertedDecimalToInteger(audioBox.volume);
+   inputRange.value = result;
+   txtVolum.innerHTML = result;
 }
 
-function pauseSoundGame() {
-   audioBox.volume = 0;
-   audioBox.load();
-}
-
-function handlePlayAudio() {
+/***
+   @void - this function is to control when the sound is silent or normal.
+****/
+function controlAudioMuteAndPlay() {
    if (audioBox.paused) {
       audioBox.play();
    }
 
    if (audioBox.volume > 0) {
       audioBox.volume = 0;
+      if (iconSound.classList.contains("fa-volume-down")) iconSound.classList.replace("fa-volume-down", "fa-volume-mute");
    } else {
       audioBox.volume = 0.1;
+      if (iconSound.classList.contains("fa-volume-mute")) iconSound.classList.replace("fa-volume-mute", "fa-volume-down");
    }
-   changeIconSound();
-}
-function changeIconSound() {
-   if (iconSound.classList.contains("fa-volume-down")) {
-      iconSound.classList.replace("fa-volume-down", "fa-volume-mute");
-   } else {
-      iconSound.classList.replace("fa-volume-mute", "fa-volume-down");
-   }
+
+   let result = getNumberConvertedDecimalToInteger(audioBox.volume);
+   inputRange.value = result;
+   txtVolum.innerHTML = result;
 }
 
-function handleChangeGameScreen(display1, display2) {
-   document.querySelector(".game_first_display").style.display = display1;
-   document.querySelector(".game_second_display").style.display = display2;
-}
-
-
-// VOLUMEN CONTROL FUNCTIONALITY
-// document.querySelector("input[type=range]").addEventListener("change", (ev) => {
-//     let result = parseInt(ev.target.value) / 100;
-//     console.log(ev.target.value);
-//     console.log(result);
-// });
-
-btnPlayMusic.addEventListener("click", handlePlayAudio);
-btnGameStart.addEventListener("click", () => {
-   console.log("Game Start");
-   audioBox.autoplay = false;
-   audioBox.loop = false;
-   handleChangeGameScreen("none", "block");
-   gameStart();
-   pauseSoundGame();
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-   handleAutoPlayMusic();
-   handleChangeGameScreen('flex', 'none')
-});
-
-
-
-function handleToggleModal(type = "default") {
+/***
+   @void - this function changes the state of the modal (show and hide).
+****/
+function handleToggleModal(type) {
    let modalGame = document.querySelector(".modal_game_control"),
       component = document.querySelectorAll(".component");
 
@@ -464,7 +527,6 @@ function handleToggleModal(type = "default") {
       modalGame.style.display = "flex";
       component.forEach(el => el.style.filter = "blur(10px)");
       handleModalTypeUpdate(type);
-      console.log('modal',type);
    } else {
       modalGame.setAttribute("data-state", "false");
       modalGame.style.display = "none";
@@ -472,6 +534,9 @@ function handleToggleModal(type = "default") {
    }
 }
 
+/***
+   @void - this function checks that modal has been called.
+****/
 function handleModalTypeUpdate(type) {
    let cardBody = document.querySelector(".modal_game_control .card-body"),
       cardHeader = document.querySelector(".modal_game_control .card-header");
@@ -491,14 +556,17 @@ function handleModalTypeUpdate(type) {
 
 function ConfigModalComponent(header, body) { 
    header.innerHTML = `
-   <h4 id="info-description"><i class="fas fa-clipboard-list"></i> Game actions</h4> 
-      <i onclick="handleToggleModal()" class="fas fa-times btn-close-Modal"></i>`;
+      <h4 id="info-description"><i class="fas fa-clipboard-list"></i> Game actions</h4> 
+      <i onclick="handleToggleModal()" class="fas fa-times btn-close-Modal"></i>
+   `;
+
    body.innerHTML = ` 
-   <div class="card-control">
-      <i onclick="logoutGame()" class="fas fa-home btn-action-modal btn"></i>
+      <div class="card-control">
+         <i onclick="logoutGame()" class="fas fa-home btn-action-modal btn"></i>
          <i onclick="retryGame()" class="fas fa-redo-alt btn-action-modal btn"></i>
-         </div>
-      `;
+         <i onclick="toggleModalVolume()" class="fas fa-music btn-action-modal btn"></i>
+      </div>
+   `;
 }
 
 function AboutModalComponent(header, body){
@@ -506,17 +574,21 @@ function AboutModalComponent(header, body){
          <h4 id="info-description"><i class="fas fa-info-circle"></i> About the game</h4> 
          <i onclick="handleToggleModal()" class="fas fa-times btn btn-close-Modal"></i>`;
    body.innerHTML = `
-   <div class="card-info">
-      <p><b>- Creator and designer by:</b></p>
-      <h2>Heibert Ocana</h2>
-      <p><b>- Social Networks:</b></p>
-      <a target="_blank" class="icon-link" href="https://www.linkedin.com/in/heibert-joseph-oca%C3%B1a-rodr%C3%ADguez-1a29871b7/"><i class="fab fa-linkedin"></i> LinkedIn</a>
-      <p><b>- Repository of the project:</b></p>
-      <a target="_blank" class="icon-link" href="https://github.com/HeibertOca97/game-tic-tac-toe"><i class="fab fa-github"></i> GitHub</a>
+   <div class="card-info style-scroll">
       <p>This demo is developed with HTML, CSS and JAVASCRiPT</p>
-      <p class="alert-box"><i class="fas fa-info-circle"></i> In advance, excuse my writing in English!!</p>
-      <p><b>- Description:</b></p>
+      <p class="cl-text"><b>- Creator and designer by:</b></p>
+      <p>Heibert Ocana</p>
+      <p class="cl-text"><b>- Social Networks:</b></p>
+      <a target="_blank" class="icon-link" href="https://www.linkedin.com/in/heibert-joseph-oca%C3%B1a-rodr%C3%ADguez-1a29871b7/"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      <p class="cl-text"><b>- Repository of the project:</b></p>
+      <a target="_blank" class="icon-link" href="https://github.com/HeibertOca97/game-tic-tac-toe"><i class="fab fa-github"></i> GitHub</a>
+      <p class="alert-box"><i class="fas fa-info-circle"></i> In advance, excuse my writing in English, if you find it a bit strange!</p>
+      <p class="cl-text"><b>- Description:</b></p>
       <p>Three in a row (also known as "Tres en raya" by Hispanics), is a pencil and paper game between two players: O and X, who alternately mark the spaces on a 3x3 board.</p>
+      <p class="cl-text"><b>- Observations before playing:</b></p>
+      <p>1. Once you've checked the cell, can't you uncheck it?</p>
+      <p>2. You have an options panel where you can change the order to start playing among other actions.</p>
+      <p>3. You will be able to see the marker of how many times you have won as tied.</p>
    </div>
       `;
 }
@@ -536,6 +608,17 @@ function WinnerOrTiedModalComponent(title, header, body) {
       `;
 }
 
+btnPlayMusic.addEventListener("click", controlAudioMuteAndPlay);
+btnGameStart.addEventListener("click", () => { 
+   handleChangeGameScreen("none", "block");
+   document.querySelector(".game_first_display").setAttribute("data-state", "false");
+   gameStart();
+   audioBox.autoplay = false;
+   audioBox.loop = false;
+   audioBox.load();
+});
 
-
-
+document.addEventListener("DOMContentLoaded", () => {
+   handleAutoPlaySoundValitation();
+   handleChangeGameScreen('flex', 'none')
+});

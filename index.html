@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="./game.css">
 </head>
 
-<body>
+<body class="style-scroll">
     <!-- First Display -->
-    <div class="game_first_display component">
+    <div class="game_first_display component style-scroll" data-state="true">
         <img class="wallpaper" src="./src/wallpaper.jpg" alt="wallpaper" />
 
         <h1 class="game_title content">TIC TAC TOE</h1>
@@ -22,22 +22,25 @@
             <button id="btn-playnow" class="btn btn-action"><i class="fas fa-play-circle"></i></button>
             <div class="__game_control">
                 <button id="btn-music" class="btn btn-action2"><i class="fas fa-volume-down"></i></button>
+                <button class="btn btn-action2" onclick="toggleModalVolume()"><i class="fas fa-music"></i></button>
                 <button class="btn btn-action2" onclick="handleToggleModal('about')"><i class="fas fa-info-circle"></i></button>
-                <!--<button class="btn btn-action2"><i class="fas fa-cog"></i></button>-->
             </div>
         </div>
     </div>
+
     <!-- Second Display -->
-    <div class="game_second_display component">
+    <div class="game_second_display component style-scroll">
         <h1 class="title-box">Tic tac toe</h1>
         <section class="card-game-state">
-            <div class="card-header">Dashboard</div>
+            <div class="card-header">Start this challenge with your friends</div>
             <div class="card-body">
-                <p>Once you've checked the cell, can't you uncheck it?</p>
+                <p>1. Once you've checked the cell, can't you uncheck it?</p>
+                <p>2. You have an options panel where you can change the order to start playing among other actions.</p>
+                <p>3. You will be able to see the marker of how many times you have won as tied.</p>
                 <div class="score-counter-box">
                     <div class="game-result-box">
                         <p><strong>Current turn</strong></p>
-                        <p id="player-character">0</p>
+                        <p id="player-character" class="style_value">0</p>
                     </div>
                     <div class="game-result-box">
                         <p><strong>Change turn now</strong></p>
@@ -49,15 +52,15 @@
                     </div>
                     <div class="game-result-box">
                         <p><strong>Player1</strong></p>
-                        <p id="player1-score">0</p>
+                        <p id="player1-score" class="style_value">0</p>
                     </div>
                     <div class="game-result-box">
                         <p><strong>Player2</strong></p>
-                        <p id="player2-score">0</p>
+                        <p id="player2-score" class="style_value">0</p>
                     </div>
                     <div class="game-result-box">
                         <p><strong>Tied game</strong></p>
-                        <p id="player-tie-score">0</p>
+                        <p id="player-tie-score" class="style_value">0</p>
                     </div>
                 </div>
             </div> 
@@ -81,6 +84,14 @@
     <audio id="audioBox">
         <source src="./src/funds.wav" type="audio/wav">
     </audio>
+
+    <div class="modal_volume hide">
+        <h4 class="card-header"><span>Volume</span> <i id="btn_hide_volumen" class="fas fa-times btn btn_hide_volumen" onclick="toggleModalVolume()"></i></h4>
+        <div class="card-body">
+            <p id="txt-vol">0</p>
+            <input type="range" id="vol" class="style_input_range" value="0" name="vol" min="0" max="10">
+        </div>
+    </div>
 
     <script src="./game.js"></script>
 </body>

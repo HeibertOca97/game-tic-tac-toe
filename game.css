@@ -21,6 +21,7 @@
     --back-dark-1: #171616;
     --back-dark-2: #121212;
     --back-dark-3: #0F0F0F;
+    --index: 50;
 }
 
 * {
@@ -44,17 +45,42 @@ i {
 audio {
     display: none;
 }
+
 .btn{
     cursor: pointer;
 }
+
+.style-scroll::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: #fff;
+}
+
+.style-scroll::-webkit-scrollbar-thumb {
+    width: 5px;
+    background-color: var(--green);
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+}
+
+.style-scroll::-webkit-scrollbar-track {
+    background-color: #d8d5d2;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+}
+
 /****************************
-        MODAL 
+*
+*
+    MODAL
+*
+* 
  ***********************/
 .modal_game_control {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 25;
+    z-index: var(--index);
     background-color: rgba(0, 0, 0, .7);
     width: 100%;
     height: 100vh;
@@ -114,7 +140,6 @@ audio {
 }
 
 .modal_game_control>.card-action .card-body>.card-info>.alert-box {
-    /*border: 2px solid #fff;*/
     background-color: #fff;
     color: var(--back-dark-1);
     padding: 5px;
@@ -150,6 +175,96 @@ audio {
 
 /**************** FIN MODAL ********************/
 
+/****************************
+*
+*
+    MODAL - VOLUME
+*
+* 
+ ***********************/
+.hide{
+    opacity: 0;
+    transform: translateY(-100%);
+}
+
+.show{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.modal_volume{
+    position: fixed;
+    right: 10px;
+    top: 5px;
+    border-radius: 10px;
+    z-index: var(--index);
+    background-color: var(--dark);
+    color: var(--green);
+    font-size: var(--size);
+    transition: all 250px linear;
+    overflow: hidden;
+}
+
+.modal_volume > .card-header{
+    line-height: 3em;
+    position: relative;
+}
+.modal_volume > .card-header span{
+    font-size: calc(var(--size) + .5em);
+    margin-left: 10px;
+}
+
+.modal_volume > .card-header .btn_hide_volumen{
+    position: absolute;
+    right: 15px;
+    top: 8px;
+}
+
+.modal_volume > .card-body{
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    padding: 10px;
+}
+.modal_volume > .card-body p {
+    text-align: center;
+    padding: 5px;
+    font-weight: 800;
+}
+
+.modal_volume > .card-body .style_input_range{
+    overflow: hidden;
+    width: 200px;
+    -webkit-appearance: none;
+    background-color: #ccc;
+    border-radius: 8px;
+    height: 15px;
+    margin: 9px 0 0 0;
+}
+
+.modal_volume > .card-body .style_input_range::-webkit-slider-runnable-track {
+    height: 15px;
+    -webkit-appearance: none;
+    color: var(--dark);
+    /*margin-top: -1px;*/
+}
+
+.modal_volume > .card-body .style_input_range::-webkit-slider-thumb {
+    border-radius: 100%;
+    -webkit-appearance: none;
+    height: 15px;
+    width: 15px;
+    cursor: ew-resize;
+    background: var(--dark);
+    box-shadow: -210px 0 0 200px var(--green);
+}
+
+/****************************
+*
+*
+    DISPLAYS
+*
+* 
+ ***********************/
 .game_first_display, .game_second_display {
     width: 100%;
     height: 100vh;
@@ -184,11 +299,11 @@ audio {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: calc(var(--index) - 25); /* 1 */
 }
 
 .game_first_display>.content {
-    z-index: 5;
+    z-index: calc(var(--index) - 20); /* 5 */
 }
 
 .game_first_display>.game_title {
@@ -300,11 +415,14 @@ audio {
     margin: 15px 0px;
     text-align: center;
 }
+
 .card-game-state>.card-body>.score-counter-box .game-result-box{
     font-size: calc(var(--size) + .2em);
     padding: 10px 0;
 }
-
+.card-game-state>.card-body>.score-counter-box .game-result-box .style_value{
+    font-size: calc(var(--size) + .5em);
+}
 .card-game-state>.card-body>.score-counter-box .game-result-box i.btn{
     display: inline-block;
     border: 2px solid #fff;
